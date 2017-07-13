@@ -142,6 +142,19 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
       
       return;
     }
+    
+    /*****************************************************************************
+     *  Control structure
+     ****************************************************************************/
+    float delta_t = (meas_package.timestamp_ - time_us_)/ 1000000.0;
+    Prediction(delta_t);
+    
+    if(meas_package.sensor_type_ == MeasurementPackage::LASER){
+      UpdateLidar(meas_package);
+    } else if(meas_package.sensor_type_ == MeasurementPackage::RADAR){
+      UpdateRadar(meas_package);
+    }
+    time_us_ = meas_package.timestamp_;
 
   }
 }
