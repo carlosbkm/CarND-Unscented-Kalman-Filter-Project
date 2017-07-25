@@ -59,6 +59,12 @@ Icon
 .AppleDB
 .AppleDesktop
 Network Trash Folder
+derby.log
+metastore_db/
+Debug/
+UnscentedKF.build/
+UnscentedKF.xcodeproj/
+
 Temporary Items
 .apdisk
 
