@@ -24,10 +24,10 @@ UKF::UKF() {
   P_ = MatrixXd(5, 5);
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 2;
+  std_a_ = 1.5;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 0.3;
+  std_yawdd_ = 0.58;
 
   // Laser measurement noise standard deviation position1 in m
   std_laspx_ = 0.15;
@@ -133,11 +133,10 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
          */
         float ro = meas_package.raw_measurements_(0);
         float phi = meas_package.raw_measurements_(1);
-        float ro_dot = meas_package.raw_measurements_(2);
         x_(0) = ro     * cos(phi);
         x_(1) = ro     * sin(phi);
-        x_(2) = ro_dot * cos(phi);
-        x_(3) = ro_dot * sin(phi);
+        x_(2) = 0;
+        x_(3) = 0;
       }
       
       // init timestamp
@@ -221,13 +220,13 @@ void UKF::Prediction(double delta_t) {
   for (int i = 0; i< 2* n_aug_ +1; i++)
   {
     //extract values for better readability
-    double p_x = Xsig_aug(0,i);
-    double p_y = Xsig_aug(1,i);
-    double v = Xsig_aug(2,i);
-    double yaw = Xsig_aug(3,i);
-    double yawd = Xsig_aug(4,i);
-    double nu_a = Xsig_aug(5,i);
-    double nu_yawdd = Xsig_aug(6,i);
+    const double p_x = Xsig_aug(0,i);
+    const double p_y = Xsig_aug(1,i);
+    const double v = Xsig_aug(2,i);
+    const double yaw = Xsig_aug(3,i);
+    const double yawd = Xsig_aug(4,i);
+    const double nu_a = Xsig_aug(5,i);
+    const double nu_yawdd = Xsig_aug(6,i);
     
     //predicted state values
     double px_p, py_p;
@@ -268,12 +267,8 @@ void UKF::Prediction(double delta_t) {
    ****************************************************************************/
   
   // set weights
-  double weight_0 = lambda_/(lambda_ + n_aug_);
-  weights_(0) = weight_0;
-  for (int i=1; i< 2 * n_aug_ + 1; i++) {  //2n+1 weights
-    double weight = 0.5/(n_aug_ + lambda_);
-    weights_(i) = weight;
-  }
+  weights_.fill(0.5/(n_aug_ + lambda_));
+  weights_(0) = lambda_/(lambda_ + n_aug_);
   
   //predicted state mean
   x_.fill(0.0);
