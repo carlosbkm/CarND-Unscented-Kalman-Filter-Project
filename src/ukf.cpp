@@ -283,7 +283,7 @@ void UKF::Prediction(double delta_t) {
     // state difference
     VectorXd x_diff = Xsig_pred_.col(i) - x_;
     //angle normalization
-    z_diff(3) = NormalizeAngle(z_diff(3));
+    x_diff(3) = NormalizeAngle(x_diff(3));
     
     P_ = P_ + weights_(i) * x_diff * x_diff.transpose() ;
   }
@@ -366,7 +366,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
     // state difference
     VectorXd x_diff = Xsig_pred_.col(i) - x_;
     //angle normalization
-    z_diff(3) = NormalizeAngle(z_diff(3));
+    x_diff(3) = NormalizeAngle(x_diff(3));
     
     Tc = Tc + weights_(i) * x_diff * z_diff.transpose();
   }
@@ -477,7 +477,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
     // state difference
     VectorXd x_diff = Xsig_pred_.col(i) - x_;
     //angle normalization
-    z_diff(3) = NormalizeAngle(z_diff(3));
+    x_diff(3) = NormalizeAngle(x_diff(3));
     
     Tc = Tc + weights_(i) * x_diff * z_diff.transpose();
   }
