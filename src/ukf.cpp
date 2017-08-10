@@ -81,6 +81,10 @@ UKF::UKF() {
   
   // the current NIS for laser
   NIS_laser_ = 0.0;
+  
+  // set weights
+  weights_.fill(0.5/(n_aug_ + lambda_));
+  weights_(0) = lambda_/(lambda_ + n_aug_);
 }
 
 UKF::~UKF() {}
@@ -265,10 +269,6 @@ void UKF::Prediction(double delta_t) {
   /*****************************************************************************
    *  Predict Mean and covariance
    ****************************************************************************/
-  
-  // set weights
-  weights_.fill(0.5/(n_aug_ + lambda_));
-  weights_(0) = lambda_/(lambda_ + n_aug_);
   
   //predicted state mean
   x_.fill(0.0);
