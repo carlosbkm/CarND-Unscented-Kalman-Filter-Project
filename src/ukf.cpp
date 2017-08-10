@@ -133,7 +133,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
        */
       
       // first measurement
-      x_ << 1, 1, 1, 1, 1;
+      x_ << 0, 0, 0, 0, 0;
       
       // init covariance matrix to the identity matrix
       P_ = MatrixXd::Identity(n_x_, n_x_);
