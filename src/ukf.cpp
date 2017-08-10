@@ -136,6 +136,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
         x_(1) = ro     * sin(phi);
         x_(2) = 0;
         x_(3) = 0;
+        x_(4) = 0;
       }
       
       // init timestamp
