@@ -152,9 +152,6 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
         float phi = meas_package.raw_measurements_(1);
         x_(0) = ro     * cos(phi);
         x_(1) = ro     * sin(phi);
-        x_(2) = 0;
-        x_(3) = 0;
-        x_(4) = 0;
       }
       
       // init timestamp
